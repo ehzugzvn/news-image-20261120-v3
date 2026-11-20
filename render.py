@@ -435,9 +435,17 @@ def main():
 
     # date-check strip (date, place 3 of 3) + sources microline
     d.rectangle([0, 950, W, 984], fill=INK)
-    dc = ("DATE CHECK \u2713  Every story on this page happened or was first reported on "
-          "Friday 20 November 2026  \u00b7  FRIDAY 20 NOVEMBER 2026")
-    d.text(((W - d.textlength(dc, font=F(SANS_B, 13))) / 2, 960), dc, font=F(SANS_B, 13), fill=WHITE)
+    # the tick is drawn, not typed: Liberation has no U+2713 glyph
+    dc_font = F(SANS_B, 13)
+    dc_pre = "DATE CHECK "
+    dc_post = ("  Every story on this page happened or was first reported on "
+               "Friday 20 November 2026  \u00b7  FRIDAY 20 NOVEMBER 2026")
+    tick_w = 13
+    dc_x = (W - d.textlength(dc_pre + dc_post, font=dc_font) - tick_w) / 2
+    d.text((dc_x, 960), dc_pre, font=dc_font, fill=WHITE)
+    tx = dc_x + d.textlength(dc_pre, font=dc_font)
+    d.line([tx + 1, 967, tx + 5, 971, tx + 12, 960], fill=WHITE, width=2, joint="curve")
+    d.text((tx + tick_w, 960), dc_post, font=dc_font, fill=WHITE)
     srcs = ("Sources: Reuters \u00b7 AP \u00b7 UN News \u00b7 CNN \u00b7 The Times \u00b7 Global Map News \u00b7 "
             "businessline \u00b7 VGC / Sensor Tower \u00b7 Nature \u00b7 Bloomberg/FT. Figures as reported; "
             "GTA VI figures are Sensor Tower estimates.")
